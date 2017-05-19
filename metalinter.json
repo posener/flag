@@ -1,0 +1,21 @@
+{
+    "Vendor": true,
+    "DisableAll": true,
+    "Enable": [
+        "gofmt",
+        "goimports",
+        "interfacer",
+        "goconst",
+        "misspell",
+        "unconvert",
+        "gosimple",
+        "golint",
+        "structcheck",
+        "deadcode",
+        "vet"
+    ],
+    "Exclude": [
+        "type name will be used as flag.FlagSet by other packages"
+    ],
+    "Deadline": "2m"
+}
