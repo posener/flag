@@ -31,13 +31,15 @@ func main() {
 +	if flag.Complete() {  // runs bash completion if necessary
 +		return  // return from main without executing the rest of the command
 +	}
++	flag.AddCompleteFlags(nil, "complete", "uncomplete")  // add flags for (un)installing bash completion
+	flag.Parse()
++	if flag.ParseInstallFlags() {  // parse bash completion installation flags
++		return  // return from main if the bash completion was installed
++	}
     ...
 }
 ```
 
-### Self completing program
+### Example
 
-In case that the program that we want to complete is written in go we
-can make it self completing.
-
-Here is an [example](./example/self/main.go)
+Here is an [example](./example/example.go)
