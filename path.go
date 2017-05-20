@@ -161,7 +161,7 @@ func matchFile(file, prefix string) bool {
 }
 
 func listFiles(dir, pattern string, allowFiles bool) files {
-	// set of all file names
+	// stringSet of all file names
 	list := files{}
 
 	dirPattern := pattern

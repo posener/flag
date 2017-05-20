@@ -44,7 +44,7 @@ func (f *FlagSet) complete(line *line) []string {
 			}
 		} else {
 			// standard library flag, we want to return an empty
-			// set of completion, since anything can come after this
+			// stringSet of completion, since anything can come after this
 			// kind of flag, and we should not complete any other
 			// flags after it.
 			return []string{}

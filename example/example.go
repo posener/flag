@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/posener/flag"
 )
 
 var (
-	file = flag.File("file", "*.md", "", "file value")
-	dir  = flag.Dir("dir", "*", "", "dir value")
-	b    = flag.Bool("bool", false, "bool value")
-	s    = flag.String("any", "", "string value")
+	file   = flag.File("file", "*.md", "", "file value")
+	dir    = flag.Dir("dir", "*", "", "dir value")
+	choice = flag.StringSet("choose", []string{"one", "two", "three"}, "", "choose between a set of values")
+	b      = flag.Bool("bool", false, "bool value")
+	s      = flag.String("any", "", "string value")
 )
 
 func main() {
@@ -31,6 +33,7 @@ func main() {
 
 	fmt.Println("file:", *file)
 	fmt.Println("dir:", *dir)
+	fmt.Println("choice:", *choice)
 	fmt.Println("bool:", *b)
 	fmt.Println("string:", *s)
 }

@@ -32,11 +32,12 @@ func TestComplete(t *testing.T) {
 		dir        string
 		bool       bool
 		string     string
+		set        string
 		parseError bool
 	}{
 		{
 			line: "command ",
-			want: []string{"-file", "-dir", "-bool", "-any"},
+			want: []string{"-file", "-dir", "-bool", "-any", "-set"},
 		},
 		{
 			line:       "command -file",
@@ -93,12 +94,27 @@ func TestComplete(t *testing.T) {
 		},
 		{
 			line: "command -bool ",
-			want: []string{"-file", "-dir", "-bool", "-any"},
+			want: []string{"-file", "-dir", "-bool", "-any", "-set"},
 			bool: true,
 		},
 		{
 			line: "command -any ",
 			want: []string{},
+		},
+		{
+			line:       "command -set ",
+			want:       []string{"a", "b", "c"},
+			parseError: true,
+		},
+		{
+			line:       "command -set d",
+			want:       []string{},
+			parseError: true,
+		},
+		{
+			line: "command -set a",
+			want: []string{"a"},
+			set:  "a",
 		},
 	}
 
@@ -111,6 +127,7 @@ func TestComplete(t *testing.T) {
 			dir := fs.Dir("dir", "*", "", "dir value")
 			b := fs.Bool("bool", false, "bool value")
 			s := fs.String("any", "", "string value")
+			set := fs.StringSet("set", []string{"a", "b", "c"}, "", "set of string values")
 
 			os.Setenv("COMP_LINE", tt.line)
 			r, w, err := os.Pipe()
@@ -148,6 +165,7 @@ func TestComplete(t *testing.T) {
 			assert.Equal(t, tt.dir, *dir, t.Name())
 			assert.Equal(t, tt.bool, *b, t.Name())
 			assert.Equal(t, tt.string, *s, t.Name())
+			assert.Equal(t, tt.set, *set, t.Name())
 		})
 	}
 }

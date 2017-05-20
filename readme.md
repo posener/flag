@@ -6,9 +6,15 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/posener/flag)](https://goreportcard.com/report/github.com/posener/flag)
 
 Flag library that provides bash completion out of the box, 
-fully compatible with standard library flag package.
+it is also fully compatible with standard library flag package.
 
 ## Features
+
+* file completion flag
+* directory completion flag
+* bool flag (that does not complete)
+* set flag
+* custom completions
 
 ### Usage
 
