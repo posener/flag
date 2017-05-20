@@ -18,7 +18,7 @@ func Complete() bool {
 func (f *FlagSet) Complete() bool {
 	l := readLine()
 	if l == nil {
-		return false
+		return cli.Run()
 	}
 
 	options := f.complete(l)

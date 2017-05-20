@@ -36,13 +36,10 @@ var (
 )
 
 func main() {
++	flag.SetInstallFlags("complete", "uncomplete")
+	flag.Parse()
 +	if flag.Complete() {  // runs bash completion if necessary
 +		return  // return from main without executing the rest of the command
-+	}
-+	flag.AddCompleteFlags(nil, "complete", "uncomplete")  // add flags for (un)installing bash completion
-	flag.Parse()
-+	if flag.ParseInstallFlags() {  // parse bash completion installation flags
-+		return  // return from main if the bash completion was installed
 +	}
     ...
 }

@@ -15,19 +15,15 @@ var (
 )
 
 func main() {
+	// add installation flags.
+	// running 'example -complete' will install the completion script in the user's
+	// home directory. running 'example -uncomplete' will uninstall it.
+	flag.SetInstallFlags("complete", "uncomplete")
+	flag.Parse()
+
 	// runs bash completion if necessary
 	if flag.Complete() {
 		// return from main without executing the rest of the command
-		return
-	}
-	// add flags for (un)installing bash completion
-	flag.AddCompleteFlags(nil, "complete", "uncomplete")
-
-	flag.Parse()
-
-	// parse bash completion installation flags
-	if flag.ParseInstallFlags() {
-		// return from main if the bash completion was installed
 		return
 	}
 
