@@ -15,7 +15,7 @@ it is also fully compatible with standard library flag package.
 * file completion flag
 * directory completion flag
 * bool flag (that does not complete)
-* set flag
+* choices flag
 * custom completions
 
 ## Usage
@@ -33,6 +33,8 @@ var (
 +	dir  = flag.Dir("dir", "*", "", "dir value")
 	b    = flag.Bool("bool", false, "bool value")
 	s    = flag.String("any", "", "string value")
+-	opts = flag.String("choose", "", "some items to choose from")
++	opts = flag.Choice("choose", []string{"work", "dring}, "", "some items to choose from")
 )
 
 func main() {

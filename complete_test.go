@@ -21,6 +21,13 @@ func chdir() {
 	})
 }
 
+func constCompleter(last string) ([]string, bool) {
+	if strings.HasPrefix("const", last) {
+		return []string{"const"}, true
+	}
+	return []string{}, true
+}
+
 func TestComplete(t *testing.T) {
 	// NoParallel: this test modifies environment variables and stdout
 	chdir()
@@ -32,12 +39,13 @@ func TestComplete(t *testing.T) {
 		dir        string
 		bool       bool
 		string     string
-		set        string
+		choice     string
+		comp       string
 		parseError bool
 	}{
 		{
 			line: "command ",
-			want: []string{"-file", "-dir", "-bool", "-any", "-set"},
+			want: []string{"-file", "-dir", "-bool", "-any", "-choice", "-comp"},
 		},
 		{
 			line:       "command -file",
@@ -94,7 +102,7 @@ func TestComplete(t *testing.T) {
 		},
 		{
 			line: "command -bool ",
-			want: []string{"-file", "-dir", "-bool", "-any", "-set"},
+			want: []string{"-file", "-dir", "-bool", "-any", "-choice", "-comp"},
 			bool: true,
 		},
 		{
@@ -102,19 +110,33 @@ func TestComplete(t *testing.T) {
 			want: []string{},
 		},
 		{
-			line:       "command -set ",
+			line:       "command -choice ",
 			want:       []string{"a", "b", "c"},
 			parseError: true,
 		},
 		{
-			line:       "command -set d",
+			line:       "command -choice d",
 			want:       []string{},
 			parseError: true,
 		},
 		{
-			line: "command -set a",
-			want: []string{"a"},
-			set:  "a",
+			line:   "command -choice a",
+			want:   []string{"a"},
+			choice: "a",
+		},
+		{
+			line: "command -comp ",
+			want: []string{"const"},
+		},
+		{
+			line: "command -comp c",
+			want: []string{"const"},
+			comp: "c",
+		},
+		{
+			line: "command -comp x",
+			want: []string{},
+			comp: "x",
 		},
 	}
 
@@ -123,11 +145,14 @@ func TestComplete(t *testing.T) {
 
 			fs := flag.NewFlagSet("command", 0)
 
-			file := fs.File("file", "*.md", "", "file value")
-			dir := fs.Dir("dir", "*", "", "dir value")
-			b := fs.Bool("bool", false, "bool value")
-			s := fs.String("any", "", "string value")
-			set := fs.StringSet("set", []string{"a", "b", "c"}, "", "set of string values")
+			var (
+				file   = fs.File("file", "*.md", "", "file value")
+				dir    = fs.Dir("dir", "*", "", "dir value")
+				b      = fs.Bool("bool", false, "bool value")
+				s      = fs.String("any", "", "string value")
+				choice = fs.Choice("choice", []string{"a", "b", "c"}, "", "choice of string values")
+				comp   = fs.StringCompleter("comp", flag.CompleteFn(constCompleter), "", "custom completion function")
+			)
 
 			os.Setenv("COMP_LINE", tt.line)
 			r, w, err := os.Pipe()
@@ -165,7 +190,8 @@ func TestComplete(t *testing.T) {
 			assert.Equal(t, tt.dir, *dir, t.Name())
 			assert.Equal(t, tt.bool, *b, t.Name())
 			assert.Equal(t, tt.string, *s, t.Name())
-			assert.Equal(t, tt.set, *set, t.Name())
+			assert.Equal(t, tt.choice, *choice, t.Name())
+			assert.Equal(t, tt.comp, *comp, t.Name())
 		})
 	}
 }

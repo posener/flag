@@ -9,7 +9,7 @@ import (
 var (
 	file   = flag.File("file", "*.md", "", "file value")
 	dir    = flag.Dir("dir", "*", "", "dir value")
-	choice = flag.StringSet("choose", []string{"one", "two", "three"}, "", "choose between a set of values")
+	choice = flag.Choice("choose", []string{"one", "two", "three"}, "", "choose between a set of values")
 	b      = flag.Bool("bool", false, "bool value")
 	s      = flag.String("any", "", "string value")
 )

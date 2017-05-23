@@ -13,7 +13,7 @@ func Complete() bool {
 	return CommandLine.Complete()
 }
 
-// Complete ctries to complete the command line according to a FlagSet.
+// Complete tries to complete the command line according to a FlagSet.
 // It returns true on success, on which the main program should exit.
 func (f *FlagSet) Complete() bool {
 	l := readLine()
@@ -44,7 +44,7 @@ func (f *FlagSet) complete(line *line) []string {
 			}
 		} else {
 			// standard library flag, we want to return an empty
-			// stringSet of completion, since anything can come after this
+			// choice of completion, since anything can come after this
 			// kind of flag, and we should not complete any other
 			// flags after it.
 			return []string{}
