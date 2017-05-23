@@ -2,14 +2,24 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/posener/flag"
 )
+
+func complete(last string) ([]string, bool) {
+	// here you can do whatever you want, http requests, read files, whatever!
+	if strings.HasPrefix("custom-string", last) {
+		return []string{"custom-string"}, true
+	}
+	return []string{}, true
+}
 
 var (
 	file   = flag.File("file", "*.md", "", "file value")
 	dir    = flag.Dir("dir", "*", "", "dir value")
 	choice = flag.Choice("choose", []string{"one", "two", "three"}, "", "choose between a set of values")
+	comp   = flag.StringCompleter("comp", flag.CompleteFn(complete), "", "custom complete function")
 	b      = flag.Bool("bool", false, "bool value")
 	s      = flag.String("any", "", "string value")
 )
@@ -30,6 +40,7 @@ func main() {
 	fmt.Println("file:", *file)
 	fmt.Println("dir:", *dir)
 	fmt.Println("choice:", *choice)
+	fmt.Println("string:", *comp)
 	fmt.Println("bool:", *b)
 	fmt.Println("string:", *s)
 }
