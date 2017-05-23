@@ -5,18 +5,22 @@
 [![GoDoc](https://godoc.org/github.com/posener/flag?status.svg)](http://godoc.org/github.com/posener/flag)
 [![Go Report Card](https://goreportcard.com/badge/github.com/posener/flag)](https://goreportcard.com/report/github.com/posener/flag)
 
-Experimental
-
-Flag library that provides bash completion out of the box, 
-it is also fully compatible with standard library flag package.
+Like `flag`, but with bash completion support.
 
 ## Features
 
-* file completion flag
-* directory completion flag
-* bool flag (that does not complete)
-* choices flag
-* custom completions
+* Fully compatible with standard library `flag` package
+* Bash completions for flag names and flag values
+* Additional flag types provided:
+  * [`File`/`Dir`](./flag_path.go): file completion flag
+  * [`Bool`](./flag_bool.go): bool flag (that does not complete)
+  * [`Choice`](./flag_choice.go): choices flag
+  * [`StringCompleter`](./flag_completer.go): custom completions
+  * Any other value that implements the [`Completer`](./complete.go) interface.
+
+## Example
+
+Here is an [example](./example/example.go)
 
 ## Usage
 
@@ -46,7 +50,3 @@ func main() {
     ...
 }
 ```
-
-## Example
-
-Here is an [example](./example/example.go)
