@@ -30,4 +30,6 @@ var (
 	Float64Var  = gflag.Float64Var
 	DurationVar = gflag.DurationVar
 	UintVar     = gflag.UintVar
+	NArg        = gflag.NArg
+	Args        = gflag.Args
 )
