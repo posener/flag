@@ -38,7 +38,7 @@ var (
 	b    = flag.Bool("bool", false, "bool value")
 	s    = flag.String("any", "", "string value")
 -	opts = flag.String("choose", "", "some items to choose from")
-+	opts = flag.Choice("choose", []string{"work", "dring}, "", "some items to choose from")
++	opts = flag.Choice("choose", []string{"work", "drink"}, "", "some items to choose from")
 )
 
 func main() {
