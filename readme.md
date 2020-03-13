@@ -1,52 +1,60 @@
 # flag
 
-[![Build Status](https://travis-ci.org/posener/flag.svg?branch=master)](https://travis-ci.org/posener/flag)
-[![codecov](https://codecov.io/gh/posener/flag/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/flag)
-[![GoDoc](https://godoc.org/github.com/posener/flag?status.svg)](http://godoc.org/github.com/posener/flag)
-[![Go Report Card](https://goreportcard.com/badge/github.com/posener/flag)](https://goreportcard.com/report/github.com/posener/flag)
+## Sub Packages
 
-Like `flag`, but with bash completion support.
+* [example](./example)
 
-## Features
+#### Examples
 
-* Fully compatible with standard library `flag` package
-* Bash completions for flag names and flag values
-* Additional flag types provided:
-  * [`File`/`Dir`](./flag_path.go): file completion flag
-  * [`Bool`](./flag_bool.go): bool flag (that does not complete)
-  * [`Choice`](./flag_choice.go): choices flag
-  * [`StringCompleter`](./flag_completer.go): custom completions
-  * Any other value that implements the [`Completer`](./complete.go) interface.
+##### Complete
 
-## Example
+ExampleComplete shows how bash completion works
 
-Here is an [example](./example/example.go)
+```golang
+package main
 
-## Usage
-
-```diff
 import (
--	"flag"
-+	"github.com/posener/flag"
+	"github.com/posener/flag"
+	"os"
+	"sync"
 )
 
-var (
--	file = flag.String("file", "", "file value")
-+	file = flag.File("file", "*.md", "", "file value")
--	dir  = flag.String("dir", "", "dir value")
-+	dir  = flag.Dir("dir", "*", "", "dir value")
-	b    = flag.Bool("bool", false, "bool value")
-	s    = flag.String("any", "", "string value")
--	opts = flag.String("choose", "", "some items to choose from")
-+	opts = flag.Choice("choose", []string{"work", "drink"}, "", "some items to choose from")
-)
+var once = sync.Once{}
+
+func chdir() {
+	once.Do(func() {
+		os.Chdir("tests")
+	})
+}
 
 func main() {
-+	flag.SetInstallFlags("complete", "uncomplete")
-	flag.Parse()
-+	if flag.Complete() {  // runs bash completion if necessary
-+		return  // return from main without executing the rest of the command
-+	}
-    ...
+	chdir()
+
+	// define a flag
+	flag.File("file", "*.md", "", "file value")
+
+	// set the environment variable used for setting the completion
+	// look that there is a space after the '-file' flag, indicating that the user
+	// want to complete by that flag
+	os.Setenv("COMP_LINE", "demo -file ")
+
+	// complete
+	flag.Complete()
+
 }
+
 ```
+
+ Output:
+
+```
+readme.md
+sub/
+./
+
+```
+
+
+---
+
+Created by [goreadme](https://github.com/apps/goreadme)
